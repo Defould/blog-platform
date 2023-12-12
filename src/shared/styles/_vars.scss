@@ -1,0 +1,49 @@
+$bg-color-base: rgba(235, 238, 243, 1);
+$bg-color: rgba(255, 255, 255, 1);
+$info-color: rgba(24, 144, 255, 1);
+$heading-color: rgba(0, 0, 0, 0.85);
+$text-color: rgba(0, 0, 0, 0.75);
+$text-color-secondary: rgba(0, 0, 0, 0.5);
+$disabled-color: rgba(0, 0, 0, 0.35);
+$success-color: rgba(82, 196, 26, 1);
+$highlight-color: rgba(245, 34, 45, 1);
+
+
+$small: 'small';
+$mobile: 'mobile';
+$tablet: 'tablet';
+$desktop: 'desktop';
+$large: 'large';
+
+$breakpoints: (
+	small: (
+		max-width: 320px,
+	),
+	mobile: (
+		max-width: 560px,
+	),
+	tablet: (
+		max-width: 768px,
+	),
+	desktop: (
+		max-width: 1024px,
+	),
+	large: (
+		max-width: 1200px,
+	),
+);
+
+@mixin respond-to($breakpoint) {
+	$raw-query: map-get($breakpoints, $breakpoint);
+
+	@if $raw-query {
+		$query: if(type-of($raw-query) == 'string', unquote($raw-query), inspect($raw-query));
+
+		@media #{$query} {
+			@content;
+		}
+	} @else {
+		@error 'Не указано значение для `#{$breakpoint}`. '
+			+ 'Пожалуйста, убедитесь, что точка останова объявлена в карте `$breakpoints`.';
+	}
+}

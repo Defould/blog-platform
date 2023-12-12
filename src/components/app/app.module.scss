@@ -1,0 +1,26 @@
+@import '../../shared/styles/_vars.scss';
+
+.app {   
+  &_container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0; 
+  }
+}
+
+:global {
+  .ant-pagination {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+  }
+  .ant-pagination .ant-pagination-item-active {
+    background-color: $info-color;
+  }
+  .ant-pagination .ant-pagination-item-active a {
+    color: $bg-color;
+  }
+  .ant-pagination .ant-pagination-item-active:hover a {
+    color: $bg-color;
+  }
+}

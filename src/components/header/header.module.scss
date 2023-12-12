@@ -1,0 +1,38 @@
+@import '../../shared/styles/_vars.scss';
+
+.header {  
+    background-color: $bg-color;
+    margin-bottom: 25px;
+    &_container {
+        display: flex;
+        max-width: 1440px;
+        min-height: 80px;
+        margin: 0 auto;
+        padding: 14px 22px;
+        justify-content: space-between;
+    }
+    &_title {
+        font-size: 18px;
+        line-height: 28px;
+    }
+    &_nav {
+        display: flex;
+        gap: 25px;
+        
+    }
+    
+}
+
+.nav {
+    &_btn {
+        font-size: 18px;
+        line-height: 28px;
+        border: none;
+        background: transparent;
+        &__green {
+            color: $success-color;
+            border: 1px solid $success-color;
+            border-radius: 5px;
+        }
+    }
+}

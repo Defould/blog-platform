@@ -1,0 +1,83 @@
+@import '../../shared/styles/_vars.scss';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Open+Sans:wght@400;600&display=swap');
+
+.item {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    padding: 15px 15px 25px 20px;
+    width: 941px;
+    height: 140px;
+    background: $bg-color;
+    border-radius: 5px;
+    &_content {        
+        width: 75%;
+    }
+    &_author {
+        display: flex;
+    }
+}
+
+.content {
+    &_header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+    }
+    &_title {
+        margin-right: 15px;
+        font-size: 20px;
+        color: $info-color;
+    }
+    &_likes {
+        width: 16px;
+        height: 16px;
+        margin: 0 10px 0 0;
+        padding: 0;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+    }
+    &_text {
+        margin: 0;
+        font-size: 12px;
+        line-height: 22px;
+    }
+    &_tag {
+        margin-bottom: 5px;
+    }
+}
+
+.data {
+    &_name {
+        margin: 0;
+        font-size: 18px;
+        line-height: 28px; 
+        color: $heading-color;
+    }
+    &_date {
+        margin: 0;
+        font-size: 12px;
+        line-height: 22px;
+        color: $text-color-secondary;
+    }
+}
+
+.author {
+    &_data {
+        margin-right: 15px;
+    }
+    &_img {
+        width: 46px;
+        height: 46px; 
+    }
+}
+
+:global {
+    .ant-statistic .ant-statistic-content {
+        font-family: 'Inter';
+        font-size: 14px;
+        font-weight: 400;
+        color:  $text-color;
+    }
+}

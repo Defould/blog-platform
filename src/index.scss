@@ -1,0 +1,19 @@
+@import './shared/styles/_vars.scss';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Open+Sans:wght@400;600&display=swap');
+
+* {
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+	font-weight: 400;
+	box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+	padding: 0;
+  background-color: $bg-color-base;  
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

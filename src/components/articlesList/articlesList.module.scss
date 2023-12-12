@@ -1,0 +1,8 @@
+@import '../../shared/styles/_vars.scss';
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    margin-bottom: 25px;
+}
