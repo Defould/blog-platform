@@ -2,15 +2,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Open+Sans:wght@400;600&display=swap');
 
 .item {
-    display: flex;
-    justify-content: space-between;
+    
     margin: 0 auto;
-    padding: 15px 15px 25px 20px;
-    width: 941px;
-    height: 140px;
+    padding: 15px 20px;
+    max-width: 940px;
+    min-height: 140px;
     background: $bg-color;
     border-radius: 5px;
-    &_content {        
+    &_top {
+        display: flex;
+        justify-content: space-between;
+    }
+    &_info {        
         width: 75%;
     }
     &_author {
@@ -18,7 +21,7 @@
     }
 }
 
-.content {
+.info {
     &_header {
         display: flex;
         align-items: center;
@@ -28,6 +31,7 @@
         margin-right: 15px;
         font-size: 20px;
         color: $info-color;
+        cursor: pointer;
     }
     &_likes {
         width: 16px;

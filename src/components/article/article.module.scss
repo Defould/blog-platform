@@ -1,0 +1,11 @@
+@import '../../shared/styles/_vars.scss';
+
+.article {
+    width: 100%;
+    height: auto;
+    &_spin {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}

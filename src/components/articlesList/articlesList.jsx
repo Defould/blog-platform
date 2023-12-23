@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Pagination, Spin } from 'antd';
+import { Pagination, Spin, Alert } from 'antd';
 
 import { fetchArticles, changePage } from '../../slices/articlesSlice';
 import ArticleItem from '../articleItem/articleItem';
@@ -11,6 +11,7 @@ const ArticlesList = () => {
   const dispatch = useDispatch();
   const isLoading = useSelector((state) => state.isLoading);
   const articlesData = useSelector((state) => state.articles);
+  const error = useSelector((state) => state.error);
   const currPage = useSelector((state) => state.currPage);
   const articlesCount = useSelector((state) => state.articlesCount);
 
@@ -27,6 +28,7 @@ const ArticlesList = () => {
   const articles = articlesData.map((article) => (
     <li key={id++} className={styles.list_item}>
       <ArticleItem
+        slug={article.slug}
         title={article.title}
         description={article.description}
         tagList={article.tagList}
@@ -37,18 +39,20 @@ const ArticlesList = () => {
     </li>
   ));
 
-  const content = isLoading ? <Spin size="large" /> : articles;
-
   return (
     <ul className={styles.list}>
-      {content}
-      <Pagination
-        defaultCurrent={currPage}
-        total={articlesCount}
-        defaultPageSize={5}
-        showSizeChanger={false}
-        onChange={(page) => onChangePage(page)}
-      />
+      {isLoading && <Spin size="large" />}
+      {articlesData && articles}
+      {error && <Alert message={error} type="error" />}
+      {articlesData.length > 0 && (
+        <Pagination
+          defaultCurrent={currPage}
+          total={articlesCount}
+          defaultPageSize={5}
+          showSizeChanger={false}
+          onChange={(page) => onChangePage(page)}
+        />
+      )}
     </ul>
   );
 };
