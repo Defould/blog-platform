@@ -14,22 +14,29 @@
     &_title {
         font-size: 18px;
         line-height: 28px;
+        a {
+            color: $heading-color;
+            text-decoration: none;
+        }
     }
     &_nav {
         display: flex;
+        align-items: center;
         gap: 25px;
-        
     }
     
 }
 
 .nav {
-    &_btn {
+    &_link {
         font-size: 18px;
         line-height: 28px;
+        color: $heading-color;
         border: none;
         background: transparent;
+        text-decoration: none;
         &__green {
+            padding: 11px 18px;
             color: $success-color;
             border: 1px solid $success-color;
             border-radius: 5px;

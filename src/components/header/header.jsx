@@ -1,13 +1,21 @@
+import { Link } from 'react-router-dom';
+
 import styles from './header.module.scss';
 
 const Header = () => {
   return (
     <header className={styles.header}>
       <div className={styles.header_container}>
-        <h1 className={styles.header_title}>Realworld Blog</h1>
+        <h1 className={styles.header_title}>
+          <Link to={'/'}>Realworld Blog</Link>
+        </h1>
         <nav className={styles.header_nav}>
-          <button className={styles.nav_btn}>Sign In</button>
-          <button className={`${styles.nav_btn} ${styles.nav_btn__green}`}>Sign Up</button>
+          <Link to={'/sign-in'} className={styles.nav_link}>
+            Sign In
+          </Link>
+          <Link to={'/sign-up'} className={`${styles.nav_link} ${styles.nav_link__green}`}>
+            Sign Up
+          </Link>
         </nav>
       </div>
     </header>

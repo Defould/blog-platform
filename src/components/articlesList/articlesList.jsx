@@ -14,6 +14,7 @@ const ArticlesList = () => {
   const error = useSelector((state) => state.error);
   const currPage = useSelector((state) => state.currPage);
   const articlesCount = useSelector((state) => state.articlesCount);
+  console.log(articlesData);
 
   useEffect(() => {
     dispatch(fetchArticles());

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import img from '../shared/assets/404_bender.png';
+import img from '../../shared/assets/404_bender.png';
 
 import styles from './notFound.module.scss';
 

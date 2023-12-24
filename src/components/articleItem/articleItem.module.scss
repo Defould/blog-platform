@@ -19,6 +19,9 @@
     &_author {
         display: flex;
     }
+    &_body {
+        overflow-wrap: anywhere;
+    }
 }
 
 .info {
@@ -42,10 +45,11 @@
         border: none;
         cursor: pointer;
     }
-    &_text {
+    &_descr {
         margin: 0;
         font-size: 12px;
         line-height: 22px;
+        overflow-wrap: anywhere;
     }
     &_tag {
         margin-bottom: 5px;

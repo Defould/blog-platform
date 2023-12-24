@@ -29,7 +29,7 @@ const ArticleItem = ({ slug, title, description, body, tagList, createdAt, autho
           </div>
 
           <div className={styles.info_tag}>{tag}</div>
-          <p className={styles.info_text}>{description}</p>
+          <p className={styles.info_descr}>{description}</p>
         </div>
 
         <div className={styles.item_author}>
