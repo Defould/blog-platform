@@ -8,7 +8,7 @@ const ProfilePage = () => {
       email={'Email address'}
       password={'New password'}
       avatarUrl={'Avatar image'}
-      btn={'Login'}
+      btn={'Save'}
     />
   );
 };

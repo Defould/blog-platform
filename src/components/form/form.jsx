@@ -2,7 +2,7 @@ import { Checkbox } from 'antd';
 
 import styles from './form.module.scss';
 
-const Form = ({ header, username, email, password, repeatPass, btn, link, avatarUrl, checkbox }) => {
+const Form = ({ header, username, email, password, repeatPass, btn, link, avatarUrl, divider, checkbox }) => {
   return (
     <div className={styles.wrapper}>
       <p className={styles.header}>{header}</p>
@@ -40,6 +40,8 @@ const Form = ({ header, username, email, password, repeatPass, btn, link, avatar
             </label>
           )}
         </div>
+
+        {divider && <div className={styles.form_divider}></div>}
 
         {checkbox && (
           <label className={styles.form_label__checkbox}>

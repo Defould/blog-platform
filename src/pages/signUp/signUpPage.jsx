@@ -8,6 +8,7 @@ const SignUpPage = () => {
       email={'Email address'}
       password={'Password'}
       repeatPass={'Repeat Password'}
+      divider={true}
       checkbox={true}
       btn={'Create'}
       link={'Sign In'}
