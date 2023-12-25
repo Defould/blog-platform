@@ -11,7 +11,8 @@ const SignUpPage = () => {
       divider={true}
       checkbox={true}
       btn={'Create'}
-      link={'Sign In'}
+      link={'../sign-in'}
+      linkText={'Sign In'}
     />
   );
 };

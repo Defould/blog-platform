@@ -17,10 +17,10 @@ function App() {
       <div className={styles.app_container}>
         <Routes>
           <Route path="/" element={<ArticlesList />} />
-          <Route path="/articles/:slug" element={<Article />} />
-          <Route path="/sign-up" element={<SignUpPage />} />
-          <Route path="/sign-in" element={<SignInPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="articles/:slug" element={<Article />} />
+          <Route path="sign-up" element={<SignUpPage />} />
+          <Route path="sign-in" element={<SignInPage />} />
+          <Route path="profile" element={<ProfilePage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </div>

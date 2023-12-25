@@ -1,8 +1,9 @@
 import { Checkbox } from 'antd';
+import { Link } from 'react-router-dom';
 
 import styles from './form.module.scss';
 
-const Form = ({ header, username, email, password, repeatPass, btn, link, avatarUrl, divider, checkbox }) => {
+const Form = ({ header, username, email, password, repeatPass, btn, link, linkText, avatarUrl, divider, checkbox }) => {
   return (
     <div className={styles.wrapper}>
       <p className={styles.header}>{header}</p>
@@ -56,7 +57,10 @@ const Form = ({ header, username, email, password, repeatPass, btn, link, avatar
       </form>
       {link && (
         <p className={styles.form_footer}>
-          Already have an account? <span className={styles.form_link}>{link}</span>
+          Already have an account?{' '}
+          <Link className={styles.form_link} to={link}>
+            {linkText}
+          </Link>
         </p>
       )}
     </div>
