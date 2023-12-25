@@ -9,6 +9,7 @@ const SignInPage = () => {
       btn={'Login'}
       link={'../sign-up'}
       linkText={'Sign Up'}
+      linkQuestion={'Don’t have an account? '}
     />
   );
 };

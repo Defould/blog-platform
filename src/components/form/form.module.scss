@@ -43,6 +43,9 @@
         border-radius: 5px;
         border: 1px solid $gray;
         font-size: 16px;
+        &__error {
+            border: 2px solid $error;
+        }
     }
     &_placeholder {
         display: block;
@@ -80,5 +83,9 @@
     }
     &_link {
         color: $info-color;
+    }
+    &_error {
+        font-size: 12px;
+        color: $error;
     }
 }

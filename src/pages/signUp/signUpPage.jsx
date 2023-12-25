@@ -13,6 +13,7 @@ const SignUpPage = () => {
       btn={'Create'}
       link={'../sign-in'}
       linkText={'Sign In'}
+      linkQuestion={'Already have an account? '}
     />
   );
 };
