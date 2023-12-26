@@ -14,9 +14,9 @@ const initialState = {
 const _apiBase = 'https://blog.kata.academy/api/';
 const _apiUsers = 'users';
 
-export const signUpUsers = createAsyncThunk('users/signUpUsers', (formData) => {
+export const signUpUser = createAsyncThunk('users/signUpUser', (formData) => {
   const { request } = useHttp();
-  return request(`${_apiBase}${_apiUsers}`, { method: 'POST', body: JSON.stringify(formData) });
+  return request(`${_apiBase}${_apiUsers}`, 'POST', JSON.stringify(formData));
 });
 
 // export const fetchArticle = createAsyncThunk('articles/fetchArticle', (slug) => {
@@ -34,17 +34,16 @@ const usersSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(signUpUsers.pending, (state) => {
+      .addCase(signUpUser.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(signUpUsers.fulfilled, (state, action) => {
+      .addCase(signUpUser.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.email = action.payload.email;
-        state.token = action.payload.token;
-        state.username = action.payload.username;
-        state.image = action.payload.image;
+        state.email = action.payload.user.email;
+        state.token = action.payload.user.token;
+        state.username = action.payload.user.username;
       })
-      .addCase(signUpUsers.rejected, (state, action) => {
+      .addCase(signUpUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       });

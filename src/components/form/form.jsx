@@ -1,5 +1,4 @@
 import { useForm } from 'react-hook-form';
-// import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import styles from './form.module.scss';
@@ -17,32 +16,16 @@ const Form = ({
   avatarUrl,
   divider,
   checkbox,
+  onSubmit,
 }) => {
   const {
     register,
     formState: { errors },
     watch,
     handleSubmit,
-    reset,
   } = useForm({
     mode: 'onChange',
   });
-
-  // const { dispatch } = useDispatch();
-  // const { user } = useSelector((state) => state.user);
-
-  const onSubmit = (data) => {
-    // const userData = {
-    //   user: {
-    //     username: data.username,
-    //     email: data.email,
-    //     password: data.password,
-    //   },
-    // };
-    // dispatch(signUpUser(userData));
-    console.log(data);
-    reset();
-  };
 
   return (
     <div className={styles.wrapper}>
