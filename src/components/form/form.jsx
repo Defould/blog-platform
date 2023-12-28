@@ -23,14 +23,24 @@ const Form = ({
     formState: { errors },
     watch,
     handleSubmit,
+    reset,
   } = useForm({
     mode: 'onChange',
   });
 
+  const submitForm = (formData) => {
+    onSubmit(formData);
+    reset();
+  };
+
   return (
     <div className={styles.wrapper}>
       <p className={styles.header}>{header}</p>
-      <form className={styles.form} action="registration_form" onSubmit={handleSubmit(onSubmit)}>
+      <form
+        className={styles.form}
+        action="registration_form"
+        onSubmit={handleSubmit((formData) => submitForm(formData))}
+      >
         <div className={styles.form_textInputs}>
           {username && (
             <label className={styles.form_label}>

@@ -1,13 +1,24 @@
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 
 import { signUpUser } from '../../slices/userSlice';
-import Form from '../../components/form/form';
+
+import styles from './signUp.module.scss';
 
 const SignUpPage = () => {
   const dispatch = useDispatch();
-  const { reset } = useForm();
   // const { user } = useSelector((state) => state.user);
+
+  const {
+    register,
+    formState: { errors },
+    watch,
+    handleSubmit,
+    reset,
+  } = useForm({
+    mode: 'onChange',
+  });
 
   const onSubmit = (data) => {
     const userData = {
@@ -18,26 +29,103 @@ const SignUpPage = () => {
       },
     };
     dispatch(signUpUser(userData));
-    console.log('before reset');
     reset();
-    console.log('after reset');
   };
 
   return (
-    <Form
-      header={'Create new account'}
-      username={'Username'}
-      email={'Email address'}
-      password={'Password'}
-      repeatPass={'Repeat Password'}
-      divider={true}
-      checkbox={true}
-      btn={'Create'}
-      link={'../sign-in'}
-      linkText={'Sign In'}
-      linkQuestion={'Already have an account? '}
-      onSubmit={(data) => onSubmit(data)}
-    />
+    <div className={styles.wrapper}>
+      <p className={styles.header}>Create new account</p>
+      <form className={styles.form} action="registration_form" onSubmit={handleSubmit(onSubmit)}>
+        <div className={styles.form_textInputs}>
+          <label className={styles.form_label}>
+            <span className={styles.form_placeholder}>Username</span>
+            <input
+              {...register('username', {
+                required: 'Username is required',
+                minLength: { value: 3, message: 'Username must be between 3 and 20 symbols' },
+                maxLength: { value: 20, message: 'Username must be between 3 and 20 symbols' },
+                pattern: {
+                  value: /^[a-z0-9]+$/, ///^[a-z][a-z0-9]*$/,
+                  message: 'You can only use lowercase English letters and numbers',
+                },
+              })}
+              className={`${styles.form_input} ${errors.username ? styles.form_input__error : ''}`}
+              placeholder="Username"
+            />
+            <p className={styles.form_error}>{errors.username?.message}</p>
+          </label>
+
+          <label className={styles.form_label}>
+            <span className={styles.form_placeholder}>Email address</span>
+            <input
+              {...register('email', {
+                required: 'Email is required',
+                pattern: {
+                  value: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$/,
+                  message: 'The email is no valid!',
+                },
+              })}
+              className={`${styles.form_input} ${errors.username ? styles.form_input__error : ''}`}
+              placeholder="Email address"
+            />
+            <p className={styles.form_error}>{errors.email?.message}</p>
+          </label>
+
+          <label className={styles.form_label}>
+            <span className={styles.form_placeholder}>Password</span>
+            <input
+              {...register('password', {
+                required: 'Password is required',
+                minLength: { value: 6, message: 'Password must be between 6 and 40 symbols' },
+                maxLength: { value: 40, message: 'Password must be between 6 and 40 symbols' },
+              })}
+              className={`${styles.form_input} ${errors.username ? styles.form_input__error : ''}`}
+              placeholder="Password"
+              type="password"
+            />
+            <p className={styles.form_error}>{errors.password?.message}</p>
+          </label>
+
+          <label className={styles.form_label}>
+            <span className={styles.form_placeholder}>Repeat Password</span>
+            <input
+              {...register('repeat_password', {
+                required: 'Passwords must match',
+                validate: (value) => value === watch('password') || 'Passwords must match',
+              })}
+              className={`${styles.form_input} ${errors.username ? styles.form_input__error : ''}`}
+              placeholder="Repeat Password"
+              type="password"
+            />
+            <p className={styles.form_error}>{errors.repeat_password?.message}</p>
+          </label>
+        </div>
+
+        <div className={styles.form_divider}></div>
+
+        <label className={styles.form_label__checkbox}>
+          <input
+            {...register('checkbox', {
+              required: 'You must give your consent to the processing of personal data',
+            })}
+            type="checkbox"
+          />
+          <span className={styles.form_placeholder__checkbox}>
+            I agree to the processing of my personal information
+          </span>
+        </label>
+        <p className={styles.form_error}>{errors.checkbox?.message}</p>
+
+        <button className={styles.form_btn}>Create</button>
+      </form>
+
+      <p className={styles.form_footer}>
+        Already have an account?
+        <Link className={styles.form_link} to={'/sign-in'}>
+          Sign In.
+        </Link>
+      </p>
+    </div>
   );
 };
 
