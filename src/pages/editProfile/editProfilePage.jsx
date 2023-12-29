@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 
-import { editProfile } from '../../slices/userSlice';
+import { editUser } from '../../slices/userSlice';
 
 import styles from './editProfile.module.scss';
 
@@ -9,8 +9,6 @@ const ProfilePage = () => {
   const dispatch = useDispatch();
   const { username } = useSelector((state) => state.users);
   const { email } = useSelector((state) => state.users);
-  const { image } = useSelector((state) => state.users);
-  console.log(image);
 
   const {
     register,
@@ -30,7 +28,7 @@ const ProfilePage = () => {
         image: data.image,
       },
     };
-    dispatch(editProfile(userData));
+    dispatch(editUser(userData));
     reset();
   };
 
@@ -71,7 +69,7 @@ const ProfilePage = () => {
                   message: 'The email is no valid!',
                 },
               })}
-              className={`${styles.form_input} ${errors.username ? styles.form_input__error : ''}`}
+              className={`${styles.form_input} ${errors.email ? styles.form_input__error : ''}`}
               placeholder="Email address"
               defaultValue={email}
             />
@@ -82,10 +80,11 @@ const ProfilePage = () => {
             <span className={styles.form_placeholder}>New password</span>
             <input
               {...register('password', {
+                required: 'Password is required',
                 minLength: { value: 6, message: 'Password must be between 6 and 40 symbols' },
                 maxLength: { value: 40, message: 'Password must be between 6 and 40 symbols' },
               })}
-              className={`${styles.form_input} ${errors.username ? styles.form_input__error : ''}`}
+              className={`${styles.form_input} ${errors.password ? styles.form_input__error : ''}`}
               placeholder="New password"
               type="password"
             />
@@ -95,7 +94,13 @@ const ProfilePage = () => {
           <label className={styles.form_label}>
             <span className={styles.form_placeholder}>Avatar image (url)</span>
             <input
-              {...register('image')}
+              {...register('image', {
+                required: 'Password is required',
+                pattern: {
+                  value: /^(http|https):\/\/[^ "]+$/,
+                  message: 'Invalid URL format',
+                },
+              })}
               className={`${styles.form_input} ${errors.image ? styles.form_input__error : ''}`}
               placeholder="Avatar image"
             />

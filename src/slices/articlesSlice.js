@@ -15,13 +15,13 @@ const _apiBase = 'https://blog.kata.academy/api/';
 const _apiArticles = 'articles/';
 const _limit = 5;
 
+const { request } = useHttp();
+
 export const fetchArticles = createAsyncThunk('articles/fetchArticles', (offset = 0) => {
-  const { request } = useHttp();
   return request(`${_apiBase}${_apiArticles}?limit=${_limit}&offset=${offset}`);
 });
 
 export const fetchArticle = createAsyncThunk('articles/fetchArticle', (slug) => {
-  const { request } = useHttp();
   return request(`${_apiBase}${_apiArticles}${slug}`);
 });
 

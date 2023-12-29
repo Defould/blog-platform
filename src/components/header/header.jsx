@@ -10,7 +10,7 @@ const Header = () => {
   const { token } = useSelector((state) => state.users);
   const { username } = useSelector((state) => state.users);
   const { image } = useSelector((state) => state.users);
-  console.log(image);
+  // console.log(image);
 
   return (
     <header className={styles.header}>
@@ -25,10 +25,10 @@ const Header = () => {
                 Create article
               </Link>
               <div className={styles.user_data}>
-                <Link to={'/profile'} className={styles.user_data_username}>
-                  {username}
+                <Link to={'/profile'} className={styles.user_data}>
+                  <p className={styles.user_data_username}></p> {username}
+                  <img className={styles.user_data_img} src={image} alt="users photo" />
                 </Link>
-                <img className={styles.user_data_img} src={image} alt="users photo" />
               </div>
               <Link
                 to={'/'}

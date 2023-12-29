@@ -16,26 +16,24 @@ const _apiSignUp = 'users';
 const _apiSignIn = `${_apiSignUp}/login`;
 const _apiGetCurrent = 'user';
 
+const { request } = useHttp();
+
 export const signUpUser = createAsyncThunk('users/signUpUser', (formData) => {
-  const { request } = useHttp();
   return request(`${_apiBase}${_apiSignUp}`, 'POST', JSON.stringify(formData));
 });
 
 export const signInUser = createAsyncThunk('users/signInUser', (formData) => {
-  const { request } = useHttp();
   return request(`${_apiBase}${_apiSignIn}`, 'POST', JSON.stringify(formData));
 });
 
 export const getCurrentUser = createAsyncThunk('users/getCurrentUser', (token) => {
-  const { request } = useHttp();
   return request(`${_apiBase}${_apiGetCurrent}`, 'GET', null, {
     Authorization: `Token ${token}`,
   });
 });
 
-export const editUser = createAsyncThunk('users/editUser', (formData) => {
-  const token = JSON.parse(localStorage.getItem('Authorization'));
-  const { request } = useHttp();
+export const editUser = createAsyncThunk('users/editUser', (formData, { getState }) => {
+  const { token } = getState().users;
 
   return request(`${_apiBase}${_apiGetCurrent}`, 'PUT', JSON.stringify(formData), {
     'Content-Type': 'application/json',
@@ -115,9 +113,13 @@ const usersSlice = createSlice({
       .addCase(editUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.email = action.payload.user.email;
+        console.log(state.email);
         state.token = action.payload.user.token;
+        console.log(state.token);
         state.username = action.payload.user.username;
+        console.log(state.username);
         state.image = action.payload.user.image;
+        console.log(state.image);
         state.error = null;
       })
       .addCase(editUser.rejected, (state, action) => {

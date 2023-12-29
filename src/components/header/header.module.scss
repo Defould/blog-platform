@@ -54,6 +54,8 @@
     display: flex;
     align-items: center;
     gap: 15px;
+    color: $heading-color;
+    text-decoration: none;
     &_username {
         max-width: 200px;
         white-space: nowrap;
@@ -61,8 +63,6 @@
         text-overflow: ellipsis;
         font-size: 18px;
         line-height: 28px;
-        color: $heading-color;
-        text-decoration: none;
     }
     &_img {
         width: 45px;
