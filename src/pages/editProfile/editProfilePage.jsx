@@ -1,24 +1,22 @@
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
-import { Link, Navigate } from 'react-router-dom';
 
-import { signUpUser } from '../../slices/userSlice';
+import { editProfile } from '../../slices/userSlice';
 
-import styles from './signUp.module.scss';
+import styles from './editProfile.module.scss';
 
-const SignUpPage = () => {
+const ProfilePage = () => {
   const dispatch = useDispatch();
-  const { token } = useSelector((state) => state.users);
-  const { error } = useSelector((state) => state.users);
+  const { username } = useSelector((state) => state.users);
+  const { email } = useSelector((state) => state.users);
+  const { image } = useSelector((state) => state.users);
+  console.log(image);
 
   const {
     register,
     formState: { errors },
-    watch,
     handleSubmit,
     reset,
-    setError,
   } = useForm({
     mode: 'onChange',
   });
@@ -29,39 +27,16 @@ const SignUpPage = () => {
         username: data.username,
         email: data.email.toLowerCase(),
         password: data.password,
+        image: data.image,
       },
     };
-    dispatch(signUpUser(userData));
+    dispatch(editProfile(userData));
     reset();
   };
 
-  useEffect(() => {
-    if (error) {
-      const errorObj = JSON.parse(error).errors;
-
-      if (errorObj.username) {
-        setError('username', {
-          type: 'server',
-          message: 'Username is already taken',
-        });
-      }
-      if (errorObj.email) {
-        setError('email', {
-          type: 'server',
-          message: 'Email is already taken',
-        });
-      }
-    }
-  }, [error, setError]);
-
-  if (token) {
-    localStorage.setItem('Authorization', JSON.stringify(token));
-    return <Navigate to="/" />;
-  }
-
   return (
     <div className={styles.wrapper}>
-      <p className={styles.header}>Create new account</p>
+      <p className={styles.header}>Edit Profile</p>
       <form className={styles.form} action="registration_form" onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.form_textInputs}>
           <label className={styles.form_label}>
@@ -78,6 +53,7 @@ const SignUpPage = () => {
               })}
               className={`${styles.form_input} ${errors.username ? styles.form_input__error : ''}`}
               placeholder="Username"
+              defaultValue={username}
             />
             <p className={styles.form_error}>
               {errors.username &&
@@ -97,68 +73,40 @@ const SignUpPage = () => {
               })}
               className={`${styles.form_input} ${errors.username ? styles.form_input__error : ''}`}
               placeholder="Email address"
+              defaultValue={email}
             />
             <p className={styles.form_error}>{errors.email?.message}</p>
           </label>
 
           <label className={styles.form_label}>
-            <span className={styles.form_placeholder}>Password</span>
+            <span className={styles.form_placeholder}>New password</span>
             <input
               {...register('password', {
-                required: 'Password is required',
                 minLength: { value: 6, message: 'Password must be between 6 and 40 symbols' },
                 maxLength: { value: 40, message: 'Password must be between 6 and 40 symbols' },
               })}
               className={`${styles.form_input} ${errors.username ? styles.form_input__error : ''}`}
-              placeholder="Password"
+              placeholder="New password"
               type="password"
             />
             <p className={styles.form_error}>{errors.password?.message}</p>
           </label>
 
           <label className={styles.form_label}>
-            <span className={styles.form_placeholder}>Repeat Password</span>
+            <span className={styles.form_placeholder}>Avatar image (url)</span>
             <input
-              {...register('repeat_password', {
-                required: 'Passwords must match',
-                validate: (value) => value === watch('password') || 'Passwords must match',
-              })}
-              className={`${styles.form_input} ${errors.username ? styles.form_input__error : ''}`}
-              placeholder="Repeat Password"
-              type="password"
+              {...register('image')}
+              className={`${styles.form_input} ${errors.image ? styles.form_input__error : ''}`}
+              placeholder="Avatar image"
             />
-            <p className={styles.form_error}>{errors.repeat_password?.message}</p>
+            <p className={styles.form_error}>{errors.image?.message}</p>
           </label>
         </div>
 
-        <div className={styles.form_divider}></div>
-
-        <label className={styles.form_label__checkbox}>
-          <input
-            {...register('checkbox', {
-              required: 'You must give your consent to the processing of personal data',
-            })}
-            className={styles.form_checkbox}
-            type="checkbox"
-          />
-          <span className={styles.custom_check}></span>
-          <span className={styles.form_placeholder__checkbox}>
-            I agree to the processing of my personal information
-          </span>
-        </label>
-        <p className={styles.form_error}>{errors.checkbox?.message}</p>
-
-        <button className={styles.form_btn}>Create</button>
+        <button className={styles.form_btn}>Save</button>
       </form>
-
-      <p className={styles.form_footer}>
-        Already have an account?
-        <Link className={styles.form_link} to={'/sign-in'}>
-          Sign In.
-        </Link>
-      </p>
     </div>
   );
 };
 
-export default SignUpPage;
+export default ProfilePage;

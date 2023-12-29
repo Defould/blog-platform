@@ -35,11 +35,38 @@
         border: none;
         background: transparent;
         text-decoration: none;
+        &__logOut {
+            padding: 10px 18px;
+            border-radius: 5px;
+            border: 1px solid $heading-color;
+            text-decoration: none;
+        }
         &__green {
-            padding: 11px 18px;
+            padding: 10px 18px;
             color: $success-color;
             border: 1px solid $success-color;
             border-radius: 5px;
         }
+    }
+}
+
+.user_data {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    &_username {
+        max-width: 200px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 18px;
+        line-height: 28px;
+        color: $heading-color;
+        text-decoration: none;
+    }
+    &_img {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%
     }
 }

@@ -3,7 +3,29 @@ export const useHttp = () => {
     const response = await fetch(url, { method, body, headers });
 
     if (!response.ok) {
-      throw new Error(`Could not fetch ${url}, status: ${response.status}`);
+      const rb = response.body;
+      const reader = rb.getReader();
+
+      const stream = await new ReadableStream({
+        start(controller) {
+          function push() {
+            reader.read().then(({ done, value }) => {
+              if (done) {
+                controller.close();
+                return;
+              }
+              controller.enqueue(value);
+              push();
+            });
+          }
+
+          push();
+        },
+      });
+
+      const res = await new Response(stream, { headers: { 'Content-Type': 'text/html' } }).text();
+
+      throw new Error(res);
     }
 
     const data = await response.json();

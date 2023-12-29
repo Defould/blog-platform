@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { useHttp } from '../hooks/http.hook';
 
 const initialState = {
-  articles: [],
+  articlesData: [],
   article: null,
   articlesCount: 0,
   isLoading: false,
@@ -76,11 +76,13 @@ const articlesSlice = createSlice({
     builder
       .addCase(fetchArticles.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(fetchArticles.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.articles = action.payload.articles.map(_transformArticleData);
+        state.articlesData = action.payload.articles.map(_transformArticleData);
         state.articlesCount = action.payload.articlesCount;
+        state.error = null;
       })
       .addCase(fetchArticles.rejected, (state, action) => {
         state.isLoading = false;
@@ -88,10 +90,12 @@ const articlesSlice = createSlice({
       })
       .addCase(fetchArticle.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(fetchArticle.fulfilled, (state, action) => {
         state.isLoading = false;
         state.article = _transformArticleData(action.payload.article);
+        state.error = null;
       })
       .addCase(fetchArticle.rejected, (state, action) => {
         state.isLoading = false;

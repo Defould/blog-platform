@@ -11,9 +11,9 @@ import styles from './article.module.scss';
 const Article = () => {
   const dispatch = useDispatch();
   const params = useParams();
-  const article = useSelector((state) => state.article);
-  const isLoading = useSelector((state) => state.isLoading);
-  const error = useSelector((state) => state.error);
+  const { article } = useSelector((state) => state.articles);
+  const { isLoading } = useSelector((state) => state.articles);
+  const { error } = useSelector((state) => state.articles);
 
   useEffect(() => {
     const { slug } = params;

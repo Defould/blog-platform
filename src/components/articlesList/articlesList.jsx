@@ -9,12 +9,11 @@ import styles from './articlesList.module.scss';
 
 const ArticlesList = () => {
   const dispatch = useDispatch();
-  const isLoading = useSelector((state) => state.isLoading);
-  const articlesData = useSelector((state) => state.articles);
-  const error = useSelector((state) => state.error);
-  const currPage = useSelector((state) => state.currPage);
-  const articlesCount = useSelector((state) => state.articlesCount);
-  console.log(articlesData);
+  const { isLoading } = useSelector((state) => state.articles);
+  const { articlesData } = useSelector((state) => state.articles);
+  const { error } = useSelector((state) => state.articles);
+  const { currPage } = useSelector((state) => state.articles);
+  const { articlesCount } = useSelector((state) => state.articles);
 
   useEffect(() => {
     dispatch(fetchArticles());
