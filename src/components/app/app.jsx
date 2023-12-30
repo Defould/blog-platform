@@ -9,6 +9,7 @@ import SignUpPage from '../../pages/signUp/signUpPage';
 import SignInPage from '../../pages/signIn/signInPage';
 import ProfilePage from '../../pages/editProfile/editProfilePage';
 import NotFoundPage from '../../pages/notFound/notFound';
+import CreateArticlePage from '../../pages/createArticle/createArticlePage';
 import { getCurrentUser } from '../../slices/userSlice';
 
 import styles from './app.module.scss';
@@ -31,6 +32,7 @@ function App() {
           <Route path="sign-up" element={<SignUpPage />} />
           <Route path="sign-in" element={<SignInPage />} />
           <Route path="profile" element={<ProfilePage />} />
+          <Route path="new-article" element={<CreateArticlePage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </div>

@@ -10,7 +10,6 @@ const Header = () => {
   const { token } = useSelector((state) => state.users);
   const { username } = useSelector((state) => state.users);
   const { image } = useSelector((state) => state.users);
-  // console.log(image);
 
   return (
     <header className={styles.header}>
@@ -21,7 +20,7 @@ const Header = () => {
         <nav className={styles.header_nav}>
           {token ? (
             <>
-              <Link to={'/sign-up'} className={`${styles.nav_link} ${styles.nav_link__green}`}>
+              <Link to={'/new-article'} className={`${styles.nav_link} ${styles.nav_link__green}`}>
                 Create article
               </Link>
               <div className={styles.user_data}>

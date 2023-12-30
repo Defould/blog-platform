@@ -1,8 +1,7 @@
 @import '../../shared/styles/_vars.scss';
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Open+Sans:wght@400;600&display=swap');
 
-.item {
-    
+.item {    
     margin: 0 auto;
     padding: 15px 20px;
     max-width: 940px;
@@ -79,6 +78,7 @@
     &_img {
         width: 46px;
         height: 46px; 
+        border-radius: 50%;
     }
 }
 
