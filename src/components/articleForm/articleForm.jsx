@@ -2,28 +2,34 @@ import { useForm, useFieldArray } from 'react-hook-form';
 
 import styles from './articleForm.module.scss';
 
-const ArticleForm = ({ title }) => {
+const ArticleForm = ({ title, onSubmitForm }) => {
   const {
     register,
     formState: { errors },
     control,
-    // watch,
-    // handleSubmit,
-    // reset,
-    // setError,
+    handleSubmit,
+    reset,
   } = useForm({
     mode: 'onChange',
   });
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: 'tags',
+    name: 'tagList',
   });
+
+  const onSubmit = (data) => {
+    onSubmitForm({
+      ...data,
+      tagList: data.tagList.map((tagObject) => tagObject.name),
+    });
+    reset();
+  };
 
   return (
     <div className={styles.wrapper}>
       <h2 className={styles.title}>{title}</h2>
-      <form className={styles.form} action="create article">
+      <form className={styles.form} action="create article" onSubmit={handleSubmit(onSubmit)}>
         <label className={styles.form_label}>
           <span className={styles.form_placeholder}>Title</span>
           <input
@@ -51,7 +57,7 @@ const ArticleForm = ({ title }) => {
         <label className={styles.form_label}>
           <span className={styles.form_placeholder}>Text</span>
           <textarea
-            {...register('text', {
+            {...register('body', {
               required: 'Text is required',
             })}
             className={`${styles.form_input} ${styles.form_input__text} ${errors.text ? styles.form_input__error : ''}`}
@@ -65,7 +71,11 @@ const ArticleForm = ({ title }) => {
           {fields.map((field, index) => (
             <div key={field.id} className={`${styles.tags_block_item}`}>
               <input
-                {...register(`tags.${index}.tag`, { required: 'Tag is required' })}
+                {...register(`tagList.${index}.name`, {
+                  maxLength: { value: 30, message: 'Your tag must contain no more than 30 characters.' },
+                  required:
+                    'Tag is required! If you do not want to provide the Tag, please delete the tag before sending form!',
+                })}
                 className={`${styles.form_input} ${styles.form_input__tag}`}
                 placeholder="Tag"
                 defaultValue={field.tag}
@@ -83,7 +93,7 @@ const ArticleForm = ({ title }) => {
 
         <button
           type="button"
-          onClick={() => append({ tag: '' })}
+          onClick={() => append({ name: '' })}
           className={`${styles.tag_button} ${styles.tag_button__add}`}
         >
           Add tag

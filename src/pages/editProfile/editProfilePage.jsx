@@ -1,13 +1,16 @@
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
+import { Spin } from 'antd';
 
-import { editUser } from '../../slices/userSlice';
+import { editUser, clearError } from '../../slices/userSlice';
 
 import styles from './editProfile.module.scss';
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
   const { username } = useSelector((state) => state.users);
+  const { isLoading } = useSelector((state) => state.users);
   const { email } = useSelector((state) => state.users);
 
   const {
@@ -31,6 +34,10 @@ const ProfilePage = () => {
     dispatch(editUser(userData));
     reset();
   };
+
+  useEffect(() => {
+    dispatch(clearError());
+  }, [dispatch]);
 
   return (
     <div className={styles.wrapper}>
@@ -109,6 +116,7 @@ const ProfilePage = () => {
         </div>
 
         <button className={styles.form_btn}>Save</button>
+        {isLoading && <Spin className={styles.spin} />}
       </form>
     </div>
   );

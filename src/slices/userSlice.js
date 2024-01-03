@@ -50,11 +50,8 @@ const usersSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
-    editProfile: (state, action) => {
-      state.currPage = action.payload;
-    },
-    setErrorObject: (state, action) => {
-      state.error = action.payload;
+    clearError: (state) => {
+      state.error = null;
     },
   },
   extraReducers: (builder) => {
@@ -145,6 +142,6 @@ const usersSlice = createSlice({
   },
 });
 
-export const { editProfile, setErrorObject } = usersSlice.actions;
+export const { clearError } = usersSlice.actions;
 
 export default usersSlice;

@@ -9,6 +9,7 @@ const initialState = {
   isLoading: false,
   error: null,
   currPage: 1,
+  status: 'idle',
 };
 
 const _apiBase = 'https://blog.kata.academy/api/';
@@ -23,6 +24,15 @@ export const fetchArticles = createAsyncThunk('articles/fetchArticles', (offset 
 
 export const fetchArticle = createAsyncThunk('articles/fetchArticle', (slug) => {
   return request(`${_apiBase}${_apiArticles}${slug}`);
+});
+
+export const createArticle = createAsyncThunk('articles/createArticle', (formData, { getState }) => {
+  const { token } = getState().users;
+
+  return request(`${_apiBase}${_apiArticles}`, 'POST', JSON.stringify(formData), {
+    'Content-Type': 'application/json',
+    Authorization: `Token ${token}`,
+  });
 });
 
 const _transformArticleData = (article) => {
@@ -98,6 +108,20 @@ const articlesSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchArticle.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      .addCase(createArticle.pending, (state) => {
+        state.status = null;
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(createArticle.fulfilled, (state) => {
+        state.status = 'fulfilled';
+        state.isLoading = false;
+        state.error = null;
+      })
+      .addCase(createArticle.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       });

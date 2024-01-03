@@ -2,14 +2,16 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { Link, Navigate } from 'react-router-dom';
+import { Spin } from 'antd';
 
-import { signInUser } from '../../slices/userSlice';
+import { signInUser, clearError } from '../../slices/userSlice';
 
 import styles from './signIn.module.scss';
 
 const SignInPage = () => {
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.users);
+  const { isLoading } = useSelector((state) => state.users);
   const { error } = useSelector((state) => state.users);
 
   const {
@@ -32,6 +34,10 @@ const SignInPage = () => {
     dispatch(signInUser(userData));
     reset();
   };
+
+  useEffect(() => {
+    dispatch(clearError());
+  }, [dispatch]);
 
   useEffect(() => {
     if (error) {
@@ -95,6 +101,7 @@ const SignInPage = () => {
         </div>
 
         <button className={styles.form_btn}>Login</button>
+        {isLoading && <Spin className={styles.spin} />}
       </form>
 
       <p className={styles.form_footer}>
