@@ -28,7 +28,7 @@ export const useHttp = () => {
       throw new Error(res);
     }
 
-    const data = await response.json();
+    const data = response.ok ? await response.json() : null;
     return data;
   };
 

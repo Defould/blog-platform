@@ -1,2 +1,11 @@
 @import '../../shared/styles/_vars.scss';
 
+.alert {
+    margin: 0 auto 20px auto;
+    max-width: 940px;
+}
+
+.spin {
+    display: block;
+    margin: 0 auto;
+}

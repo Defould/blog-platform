@@ -1,18 +1,20 @@
-import { Link } from 'react-router-dom';
-import { Tag, Statistic } from 'antd';
+import { nanoid } from '@reduxjs/toolkit';
+import { Statistic, Tag } from 'antd';
 import { format } from 'date-fns';
 import Markdown from 'react-markdown';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import heart from '../../shared/assets/heart 1.svg';
 
 import styles from './articleItem.module.scss';
 
 const ArticleItem = ({ slug, title, description, body, tagList, createdAt, author, favoritesCount, fullArticle }) => {
-  let id = 0;
-  const tag = tagList.length > 0 ? tagList.map((tag) => <Tag key={id++}>{tag}</Tag>) : null;
+  const tags = tagList.length > 0 ? tagList.map((tag) => <Tag key={nanoid()}>{tag}</Tag>) : null;
   const formatDate = format(new Date(createdAt), 'MMMM dd, yyyy');
   const authorName = author.username;
   const authorImgUrl = author.image;
+  const { username } = useSelector((state) => state.users);
 
   return (
     <div className={styles.item}>
@@ -28,7 +30,7 @@ const ArticleItem = ({ slug, title, description, body, tagList, createdAt, autho
             <Statistic className={styles.info_stats} value={favoritesCount} />
           </div>
 
-          <div className={styles.info_tag}>{tag}</div>
+          <div className={styles.info_tag}>{tags}</div>
           <p className={styles.info_descr}>{description}</p>
         </div>
 
@@ -36,6 +38,14 @@ const ArticleItem = ({ slug, title, description, body, tagList, createdAt, autho
           <div className={styles.author_data}>
             <p className={styles.data_name}>{authorName}</p>
             <p className={styles.data_date}>{formatDate}</p>
+            {fullArticle && username === authorName && (
+              <div className={styles.data_buttons}>
+                <button className={`${styles.data_button} ${styles.data_button__delete}`}>Delete</button>
+                <Link to={`/articles/${slug}/edit`} className={`${styles.data_button} ${styles.data_button__edit}`}>
+                  Edit
+                </Link>
+              </div>
+            )}
           </div>
 
           <img className={styles.author_img} src={authorImgUrl} alt="author photo" />

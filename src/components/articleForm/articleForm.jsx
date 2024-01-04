@@ -2,7 +2,11 @@ import { useForm, useFieldArray } from 'react-hook-form';
 
 import styles from './articleForm.module.scss';
 
-const ArticleForm = ({ title, onSubmitForm }) => {
+const ArticleForm = ({ title, onSubmitForm, article = {} }) => {
+  const tags = article?.tagList?.map((tag) => ({
+    name: tag,
+  }));
+
   const {
     register,
     formState: { errors },
@@ -11,6 +15,7 @@ const ArticleForm = ({ title, onSubmitForm }) => {
     reset,
   } = useForm({
     mode: 'onChange',
+    defaultValues: { tagList: tags },
   });
 
   const { fields, append, remove } = useFieldArray({
@@ -35,9 +40,11 @@ const ArticleForm = ({ title, onSubmitForm }) => {
           <input
             {...register('title', {
               required: 'Title is required',
+              maxLength: { value: 50, message: 'Your tag must contain no more than 30 characters.' },
             })}
             className={`${styles.form_input} ${errors.title ? styles.form_input__error : ''}`}
             placeholder="Title"
+            defaultValue={article.title ? article.title : ''}
           />
           <p className={styles.form_error}>{errors?.title?.message}</p>
         </label>
@@ -47,9 +54,11 @@ const ArticleForm = ({ title, onSubmitForm }) => {
           <input
             {...register('description', {
               required: 'Short description is required',
+              maxLength: { value: 300, message: 'Your tag must contain no more than 30 characters.' },
             })}
             className={`${styles.form_input} ${errors.description ? styles.form_input__error : ''}`}
             placeholder="Short description"
+            defaultValue={article.description ? article.description : ''}
           />
           <p className={styles.form_error}>{errors?.description?.message}</p>
         </label>
@@ -62,6 +71,7 @@ const ArticleForm = ({ title, onSubmitForm }) => {
             })}
             className={`${styles.form_input} ${styles.form_input__text} ${errors.text ? styles.form_input__error : ''}`}
             placeholder="Text"
+            defaultValue={article.body ? article.body : ''}
           />
           <p className={styles.form_error}>{errors?.text?.message}</p>
         </label>
@@ -72,14 +82,15 @@ const ArticleForm = ({ title, onSubmitForm }) => {
             <div key={field.id} className={`${styles.tags_block_item}`}>
               <input
                 {...register(`tagList.${index}.name`, {
-                  maxLength: { value: 30, message: 'Your tag must contain no more than 30 characters.' },
                   required:
                     'Tag is required! If you do not want to provide the Tag, please delete the tag before sending form!',
+                  maxLength: { value: 30, message: 'Your tag must contain no more than 30 characters.' },
                 })}
                 className={`${styles.form_input} ${styles.form_input__tag}`}
                 placeholder="Tag"
                 defaultValue={field.tag}
               />
+
               <button
                 type="button"
                 onClick={() => remove(index)}
@@ -90,6 +101,7 @@ const ArticleForm = ({ title, onSubmitForm }) => {
             </div>
           ))}
         </div>
+        <p className={styles.form_error}>{errors?.tagList?.message}</p>
 
         <button
           type="button"

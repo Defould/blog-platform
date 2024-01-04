@@ -9,7 +9,7 @@ const initialState = {
   isLoading: false,
   error: null,
   currPage: 1,
-  status: 'idle',
+  status: null,
 };
 
 const _apiBase = 'https://blog.kata.academy/api/';
@@ -30,6 +30,25 @@ export const createArticle = createAsyncThunk('articles/createArticle', (formDat
   const { token } = getState().users;
 
   return request(`${_apiBase}${_apiArticles}`, 'POST', JSON.stringify(formData), {
+    'Content-Type': 'application/json',
+    Authorization: `Token ${token}`,
+  });
+});
+
+export const editArticle = createAsyncThunk('articles/editArticle', ({ formData, slug }, { getState }) => {
+  const { token } = getState().users;
+  console.log(JSON.stringify(formData));
+
+  return request(`${_apiBase}${_apiArticles}${slug}`, 'PUT', JSON.stringify({ article: { ...formData } }), {
+    'Content-Type': 'application/json',
+    Authorization: `Token ${token}`,
+  });
+});
+
+export const deleteArticle = createAsyncThunk('articles/deleteArticle', (slug, { getState }) => {
+  const { token } = getState().users;
+
+  return request(`${_apiBase}${_apiArticles}${slug}`, 'DELETE', null, {
     'Content-Type': 'application/json',
     Authorization: `Token ${token}`,
   });
@@ -122,6 +141,20 @@ const articlesSlice = createSlice({
         state.error = null;
       })
       .addCase(createArticle.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      .addCase(editArticle.pending, (state) => {
+        state.status = null;
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(editArticle.fulfilled, (state) => {
+        state.status = 'fulfilled';
+        state.isLoading = false;
+        state.error = null;
+      })
+      .addCase(editArticle.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       });
