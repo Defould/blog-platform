@@ -1,20 +1,28 @@
 import { nanoid } from '@reduxjs/toolkit';
-import { Statistic, Tag } from 'antd';
+import { Statistic, Tag, Popconfirm } from 'antd';
 import { format } from 'date-fns';
 import Markdown from 'react-markdown';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 
+import { deleteArticle } from '../../slices/articlesSlice';
 import heart from '../../shared/assets/heart 1.svg';
 
 import styles from './articleItem.module.scss';
 
 const ArticleItem = ({ slug, title, description, body, tagList, createdAt, author, favoritesCount, fullArticle }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const tags = tagList.length > 0 ? tagList.map((tag) => <Tag key={nanoid()}>{tag}</Tag>) : null;
   const formatDate = format(new Date(createdAt), 'MMMM dd, yyyy');
   const authorName = author.username;
   const authorImgUrl = author.image;
   const { username } = useSelector((state) => state.users);
+
+  const onDelete = () => {
+    dispatch(deleteArticle(slug));
+    navigate('/');
+  };
 
   return (
     <div className={styles.item}>
@@ -40,7 +48,16 @@ const ArticleItem = ({ slug, title, description, body, tagList, createdAt, autho
             <p className={styles.data_date}>{formatDate}</p>
             {fullArticle && username === authorName && (
               <div className={styles.data_buttons}>
-                <button className={`${styles.data_button} ${styles.data_button__delete}`}>Delete</button>
+                <Popconfirm
+                  title="Delete the task"
+                  description="Are you sure to delete this task?"
+                  okText="Yes"
+                  cancelText="No"
+                  onConfirm={onDelete}
+                >
+                  <button className={`${styles.data_button} ${styles.data_button__delete}`}>Delete</button>
+                </Popconfirm>
+
                 <Link to={`/articles/${slug}/edit`} className={`${styles.data_button} ${styles.data_button__edit}`}>
                   Edit
                 </Link>

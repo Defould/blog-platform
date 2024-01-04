@@ -39,7 +39,7 @@ const Article = () => {
           />
         </>
       )}
-      {error && <Alert message={error} type="error" />}
+      {error && <Alert className={styles.alert} message={error} type="error" />}
     </div>
   );
 };

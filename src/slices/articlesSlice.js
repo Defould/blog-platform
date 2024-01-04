@@ -47,6 +47,7 @@ export const editArticle = createAsyncThunk('articles/editArticle', ({ formData,
 
 export const deleteArticle = createAsyncThunk('articles/deleteArticle', (slug, { getState }) => {
   const { token } = getState().users;
+  console.log(slug);
 
   return request(`${_apiBase}${_apiArticles}${slug}`, 'DELETE', null, {
     'Content-Type': 'application/json',
@@ -155,6 +156,20 @@ const articlesSlice = createSlice({
         state.error = null;
       })
       .addCase(editArticle.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      .addCase(deleteArticle.pending, (state) => {
+        state.status = null;
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(deleteArticle.fulfilled, (state) => {
+        state.status = 'fulfilled';
+        state.isLoading = false;
+        state.error = null;
+      })
+      .addCase(deleteArticle.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       });

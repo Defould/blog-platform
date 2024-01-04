@@ -74,6 +74,7 @@ const CreateArticlePage = () => {
     <div className={styles.container}>
       {isLoading && <Spin className={styles.spin} />}
       {status && <Alert className={styles.alert} message="Successfully" type="success" showIcon closable />}
+      {error && <Alert className={styles.alert} message={error} type="error" showIcon closable />}
       <ArticleForm title={'Create new article'} onSubmitForm={(data) => onSubmit(data)} />
     </div>
   );
