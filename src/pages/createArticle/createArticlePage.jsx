@@ -5,7 +5,7 @@ import { Navigate } from 'react-router-dom';
 import { Spin, Alert } from 'antd';
 
 import ArticleForm from '../../components/articleForm/articleForm';
-import { createArticle } from '../../slices/articlesSlice';
+import { createArticle, changePage } from '../../slices/articlesSlice';
 import { clearError } from '../../slices/userSlice';
 
 import styles from './createArticlePage.module.scss';
@@ -21,6 +21,7 @@ const CreateArticlePage = () => {
 
   useEffect(() => {
     dispatch(clearError());
+    dispatch(changePage({ status: null }));
   }, [dispatch]);
 
   if (!token) {

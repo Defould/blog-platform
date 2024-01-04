@@ -47,7 +47,6 @@ export const editArticle = createAsyncThunk('articles/editArticle', ({ formData,
 
 export const deleteArticle = createAsyncThunk('articles/deleteArticle', (slug, { getState }) => {
   const { token } = getState().users;
-  console.log(slug);
 
   return request(`${_apiBase}${_apiArticles}${slug}`, 'DELETE', null, {
     'Content-Type': 'application/json',
@@ -100,6 +99,9 @@ const articlesSlice = createSlice({
   reducers: {
     changePage: (state, action) => {
       state.currPage = action.payload;
+    },
+    clearStatus: (state) => {
+      state.status = null;
     },
   },
   extraReducers: (builder) => {
@@ -176,6 +178,6 @@ const articlesSlice = createSlice({
   },
 });
 
-export const { changePage } = articlesSlice.actions;
+export const { changePage, clearStatus } = articlesSlice.actions;
 
 export default articlesSlice;

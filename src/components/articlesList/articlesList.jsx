@@ -14,10 +14,11 @@ const ArticlesList = () => {
   const { error } = useSelector((state) => state.articles);
   const { currPage } = useSelector((state) => state.articles);
   const { articlesCount } = useSelector((state) => state.articles);
+  const { currentPage } = useSelector((state) => state.articles);
 
   useEffect(() => {
-    dispatch(fetchArticles());
-  }, []);
+    dispatch(fetchArticles(currentPage * 5 - 5));
+  }, [dispatch, currentPage]);
 
   const onChangePage = (page) => {
     dispatch(fetchArticles(page * 5 - 5));

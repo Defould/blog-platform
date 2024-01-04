@@ -1,8 +1,13 @@
+import { useState } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+
+import { clearStatus } from '../../slices/articlesSlice';
 
 import styles from './articleForm.module.scss';
 
 const ArticleForm = ({ title, onSubmitForm, article = {} }) => {
+  const dispatch = useDispatch();
   const tags = article?.tagList?.map((tag) => ({
     name: tag,
   }));
@@ -21,6 +26,10 @@ const ArticleForm = ({ title, onSubmitForm, article = {} }) => {
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'tagList',
+  });
+
+  useState(() => {
+    dispatch(clearStatus());
   });
 
   const onSubmit = (data) => {
