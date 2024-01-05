@@ -35,6 +35,7 @@ const Article = () => {
             createdAt={article.createdAt}
             author={article.author}
             favoritesCount={article.favoritesCount}
+            favorited={article.favorited}
             fullArticle={true}
           />
         </>

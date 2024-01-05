@@ -8,7 +8,6 @@ const initialState = {
   articlesCount: 0,
   isLoading: false,
   error: null,
-  // currPage: 1,
   status: null,
 };
 
@@ -18,12 +17,22 @@ const _limit = 5;
 
 const { request } = useHttp();
 
-export const fetchArticles = createAsyncThunk('articles/fetchArticles', (offset = 0) => {
-  return request(`${_apiBase}${_apiArticles}?limit=${_limit}&offset=${offset}`);
+export const fetchArticles = createAsyncThunk('articles/fetchArticles', (offset = 0, { getState }) => {
+  const { token } = getState().users;
+
+  return request(`${_apiBase}${_apiArticles}?limit=${_limit}&offset=${offset}`, 'GET', null, {
+    'Content-Type': 'application/json',
+    Authorization: `Token ${token}`,
+  });
 });
 
-export const fetchArticle = createAsyncThunk('articles/fetchArticle', (slug) => {
-  return request(`${_apiBase}${_apiArticles}${slug}`);
+export const fetchArticle = createAsyncThunk('articles/fetchArticle', (slug, { getState }) => {
+  const { token } = getState().users;
+
+  return request(`${_apiBase}${_apiArticles}${slug}`, 'GET', null, {
+    'Content-Type': 'application/json',
+    Authorization: `Token ${token}`,
+  });
 });
 
 export const createArticle = createAsyncThunk('articles/createArticle', (formData, { getState }) => {
@@ -37,7 +46,6 @@ export const createArticle = createAsyncThunk('articles/createArticle', (formDat
 
 export const editArticle = createAsyncThunk('articles/editArticle', ({ formData, slug }, { getState }) => {
   const { token } = getState().users;
-  console.log(JSON.stringify(formData));
 
   return request(`${_apiBase}${_apiArticles}${slug}`, 'PUT', JSON.stringify({ article: { ...formData } }), {
     'Content-Type': 'application/json',
@@ -49,6 +57,24 @@ export const deleteArticle = createAsyncThunk('articles/deleteArticle', (slug, {
   const { token } = getState().users;
 
   return request(`${_apiBase}${_apiArticles}${slug}`, 'DELETE', null, {
+    'Content-Type': 'application/json',
+    Authorization: `Token ${token}`,
+  });
+});
+
+export const favoriteArticle = createAsyncThunk('articles/favoriteArticle', (slug, { getState }) => {
+  const { token } = getState().users;
+
+  return request(`${_apiBase}${_apiArticles}${slug}/favorite`, 'POST', null, {
+    'Content-Type': 'application/json',
+    Authorization: `Token ${token}`,
+  });
+});
+
+export const unFavoriteArticle = createAsyncThunk('articles/unFavoriteArticle', (slug, { getState }) => {
+  const { token } = getState().users;
+
+  return request(`${_apiBase}${_apiArticles}${slug}/favorite`, 'DELETE', null, {
     'Content-Type': 'application/json',
     Authorization: `Token ${token}`,
   });
@@ -170,6 +196,24 @@ const articlesSlice = createSlice({
       })
       .addCase(deleteArticle.rejected, (state, action) => {
         state.isLoading = false;
+        state.error = action.error.message;
+      })
+      .addCase(favoriteArticle.pending, (state) => {
+        state.error = null;
+      })
+      .addCase(favoriteArticle.fulfilled, (state) => {
+        state.error = null;
+      })
+      .addCase(favoriteArticle.rejected, (state, action) => {
+        state.error = action.error.message;
+      })
+      .addCase(unFavoriteArticle.pending, (state) => {
+        state.error = null;
+      })
+      .addCase(unFavoriteArticle.fulfilled, (state) => {
+        state.error = null;
+      })
+      .addCase(unFavoriteArticle.rejected, (state, action) => {
         state.error = action.error.message;
       });
   },

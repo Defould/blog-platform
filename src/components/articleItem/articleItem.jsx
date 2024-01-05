@@ -1,16 +1,32 @@
+import { useState } from 'react';
 import { nanoid } from '@reduxjs/toolkit';
-import { Statistic, Tag, Popconfirm } from 'antd';
+import { Statistic, Tag, Popconfirm, message } from 'antd';
 import { format } from 'date-fns';
-import Markdown from 'react-markdown';
+import Markdown from 'markdown-to-jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { deleteArticle } from '../../slices/articlesSlice';
-import heart from '../../shared/assets/heart 1.svg';
+import { deleteArticle, favoriteArticle, unFavoriteArticle } from '../../slices/articlesSlice';
+import favoritIcon from '../../shared/assets/favorit.svg';
+import unfavoritIcon from '../../shared/assets/unfavorit.svg';
 
 import styles from './articleItem.module.scss';
 
-const ArticleItem = ({ slug, title, description, body, tagList, createdAt, author, favoritesCount, fullArticle }) => {
+const ArticleItem = ({
+  slug,
+  title,
+  description,
+  body,
+  tagList,
+  createdAt,
+  author,
+  favoritesCount,
+  favorited,
+  fullArticle,
+}) => {
+  let [isLike, setIsLike] = useState(favorited);
+  let [likeCount, setLikeCount] = useState(favoritesCount);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const tags = tagList.length > 0 ? tagList.map((tag) => <Tag key={nanoid()}>{tag}</Tag>) : null;
@@ -18,11 +34,29 @@ const ArticleItem = ({ slug, title, description, body, tagList, createdAt, autho
   const authorName = author.username;
   const authorImgUrl = author.image;
   const { username } = useSelector((state) => state.users);
+  const { token } = useSelector((state) => state.users);
 
   const onDelete = () => {
     dispatch(deleteArticle(slug));
     navigate('/');
   };
+
+  const onFavorite = () => {
+    if (!token) {
+      message.error('You are not logged in!');
+      return;
+    }
+
+    if (!isLike) {
+      dispatch(favoriteArticle(slug));
+      setLikeCount((l) => l + 1);
+    } else {
+      dispatch(unFavoriteArticle(slug));
+      setLikeCount((l) => l - 1);
+    }
+    setIsLike(!isLike);
+  };
+  const like = isLike ? favoritIcon : unfavoritIcon;
 
   return (
     <div className={styles.item}>
@@ -32,10 +66,10 @@ const ArticleItem = ({ slug, title, description, body, tagList, createdAt, autho
             <Link className={styles.info_title} to={`articles/${slug}`}>
               {title}
             </Link>
-            <button className={styles.info_likes}>
-              <img src={heart} alt="like icon" />
+            <button onClick={onFavorite} className={styles.info_likes}>
+              <img src={like} alt="like icon" />
             </button>
-            <Statistic className={styles.info_stats} value={favoritesCount} />
+            <Statistic className={styles.info_stats} value={likeCount} />
           </div>
 
           <div className={styles.info_tag}>{tags}</div>

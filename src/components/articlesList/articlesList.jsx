@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { nanoid } from '@reduxjs/toolkit';
 import { useSearchParams } from 'react-router-dom';
@@ -10,6 +10,8 @@ import ArticleItem from '../articleItem/articleItem';
 import styles from './articlesList.module.scss';
 
 const ArticlesList = () => {
+  const [articles, setArticles] = useState([]);
+
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = parseInt(searchParams.get('page')) || 1;
 
@@ -21,32 +23,36 @@ const ArticlesList = () => {
 
   useEffect(() => {
     dispatch(fetchArticles(currentPage * 5 - 5));
-  }, [dispatch, searchParams]);
+  }, [dispatch, currentPage]);
+
+  useEffect(() => {
+    const articles = articlesData.map((article) => (
+      <li key={nanoid()} className={styles.list_item}>
+        <ArticleItem
+          slug={article.slug}
+          title={article.title}
+          description={article.description}
+          tagList={article.tagList}
+          createdAt={article.createdAt}
+          author={article.author}
+          favoritesCount={article.favoritesCount}
+          favorited={article.favorited}
+        />
+      </li>
+    ));
+    setArticles(articles);
+  }, [articlesData, setArticles, isLoading]);
 
   const onChangePage = (page) => {
     dispatch(fetchArticles(page * 5 - 5));
     setSearchParams({ page });
   };
 
-  const articles = articlesData.map((article) => (
-    <li key={nanoid()} className={styles.list_item}>
-      <ArticleItem
-        slug={article.slug}
-        title={article.title}
-        description={article.description}
-        tagList={article.tagList}
-        createdAt={article.createdAt}
-        author={article.author}
-        favoritesCount={article.favoritesCount}
-      />
-    </li>
-  ));
-
   return (
     <ul className={styles.list}>
+      {error && <Alert className={styles.alert} message={error} type="error" />}
       {isLoading && <Spin size="large" />}
       {articlesData && articles}
-      {error && <Alert message={error} type="error" />}
       {articlesData.length > 0 && (
         <Pagination
           defaultCurrent={1}
