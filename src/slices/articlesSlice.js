@@ -8,7 +8,7 @@ const initialState = {
   articlesCount: 0,
   isLoading: false,
   error: null,
-  currPage: 1,
+  // currPage: 1,
   status: null,
 };
 
@@ -97,9 +97,6 @@ const articlesSlice = createSlice({
   name: 'articles',
   initialState,
   reducers: {
-    changePage: (state, action) => {
-      state.currPage = action.payload;
-    },
     clearStatus: (state) => {
       state.status = null;
     },
@@ -178,6 +175,6 @@ const articlesSlice = createSlice({
   },
 });
 
-export const { changePage, clearStatus } = articlesSlice.actions;
+export const { clearStatus } = articlesSlice.actions;
 
 export default articlesSlice;
