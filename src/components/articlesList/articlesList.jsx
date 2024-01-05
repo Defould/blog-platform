@@ -44,6 +44,7 @@ const ArticlesList = () => {
   }, [articlesData, setArticles, isLoading]);
 
   const onChangePage = (page) => {
+    setArticles([]);
     dispatch(fetchArticles(page * 5 - 5));
     setSearchParams({ page });
   };

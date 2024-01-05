@@ -126,6 +126,9 @@ const articlesSlice = createSlice({
     clearStatus: (state) => {
       state.status = null;
     },
+    clearArticle: (state) => {
+      state.article = null;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -219,6 +222,6 @@ const articlesSlice = createSlice({
   },
 });
 
-export const { clearStatus } = articlesSlice.actions;
+export const { clearStatus, clearArticle } = articlesSlice.actions;
 
 export default articlesSlice;
