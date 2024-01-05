@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { nanoid } from '@reduxjs/toolkit';
-import { Statistic, Tag, Popconfirm, message } from 'antd';
+import { Statistic, Tag, Popconfirm, message, Avatar } from 'antd';
 import { format } from 'date-fns';
 import Markdown from 'markdown-to-jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import UserOutlined from '@ant-design/icons/UserOutlined';
 
 import { deleteArticle, favoriteArticle, unFavoriteArticle } from '../../slices/articlesSlice';
 import favoritIcon from '../../shared/assets/favorit.svg';
@@ -56,7 +57,6 @@ const ArticleItem = ({
     }
     setIsLike(!isLike);
   };
-  const like = isLike ? favoritIcon : unfavoritIcon;
 
   return (
     <div className={styles.item}>
@@ -66,9 +66,15 @@ const ArticleItem = ({
             <Link className={styles.info_title} to={`articles/${slug}`}>
               {title}
             </Link>
-            <button onClick={onFavorite} className={styles.info_likes}>
-              <img src={like} alt="like icon" />
-            </button>
+            {isLike ? (
+              <button onClick={onFavorite} className={styles.info_likes}>
+                <img src={favoritIcon} alt="like icon" />
+              </button>
+            ) : (
+              <button onClick={onFavorite} className={styles.info_likes}>
+                <img src={unfavoritIcon} alt="like icon" />
+              </button>
+            )}
             <Statistic className={styles.info_stats} value={likeCount} />
           </div>
 
@@ -99,7 +105,8 @@ const ArticleItem = ({
             )}
           </div>
 
-          <img className={styles.author_img} src={authorImgUrl} alt="author photo" />
+          {/* <img className={styles.author_img} src={authorImgUrl} alt="author photo" /> */}
+          <Avatar size={64} icon={<UserOutlined />} src={authorImgUrl} alt="author photo" />
         </div>
       </div>
 

@@ -17,8 +17,8 @@ const _limit = 5;
 
 const { request } = useHttp();
 
-export const fetchArticles = createAsyncThunk('articles/fetchArticles', (offset = 0, { getState }) => {
-  const { token } = getState().users;
+export const fetchArticles = createAsyncThunk('articles/fetchArticles', (offset = 0) => {
+  const token = JSON.parse(localStorage.getItem('Authorization'));
 
   return request(`${_apiBase}${_apiArticles}?limit=${_limit}&offset=${offset}`, 'GET', null, {
     'Content-Type': 'application/json',
@@ -26,8 +26,8 @@ export const fetchArticles = createAsyncThunk('articles/fetchArticles', (offset 
   });
 });
 
-export const fetchArticle = createAsyncThunk('articles/fetchArticle', (slug, { getState }) => {
-  const { token } = getState().users;
+export const fetchArticle = createAsyncThunk('articles/fetchArticle', (slug) => {
+  const token = JSON.parse(localStorage.getItem('Authorization'));
 
   return request(`${_apiBase}${_apiArticles}${slug}`, 'GET', null, {
     'Content-Type': 'application/json',
@@ -35,8 +35,8 @@ export const fetchArticle = createAsyncThunk('articles/fetchArticle', (slug, { g
   });
 });
 
-export const createArticle = createAsyncThunk('articles/createArticle', (formData, { getState }) => {
-  const { token } = getState().users;
+export const createArticle = createAsyncThunk('articles/createArticle', (formData) => {
+  const token = JSON.parse(localStorage.getItem('Authorization'));
 
   return request(`${_apiBase}${_apiArticles}`, 'POST', JSON.stringify(formData), {
     'Content-Type': 'application/json',
@@ -44,8 +44,8 @@ export const createArticle = createAsyncThunk('articles/createArticle', (formDat
   });
 });
 
-export const editArticle = createAsyncThunk('articles/editArticle', ({ formData, slug }, { getState }) => {
-  const { token } = getState().users;
+export const editArticle = createAsyncThunk('articles/editArticle', ({ formData, slug }) => {
+  const token = JSON.parse(localStorage.getItem('Authorization'));
 
   return request(`${_apiBase}${_apiArticles}${slug}`, 'PUT', JSON.stringify({ article: { ...formData } }), {
     'Content-Type': 'application/json',
@@ -53,8 +53,8 @@ export const editArticle = createAsyncThunk('articles/editArticle', ({ formData,
   });
 });
 
-export const deleteArticle = createAsyncThunk('articles/deleteArticle', (slug, { getState }) => {
-  const { token } = getState().users;
+export const deleteArticle = createAsyncThunk('articles/deleteArticle', (slug) => {
+  const token = JSON.parse(localStorage.getItem('Authorization'));
 
   return request(`${_apiBase}${_apiArticles}${slug}`, 'DELETE', null, {
     'Content-Type': 'application/json',
@@ -62,8 +62,8 @@ export const deleteArticle = createAsyncThunk('articles/deleteArticle', (slug, {
   });
 });
 
-export const favoriteArticle = createAsyncThunk('articles/favoriteArticle', (slug, { getState }) => {
-  const { token } = getState().users;
+export const favoriteArticle = createAsyncThunk('articles/favoriteArticle', (slug) => {
+  const token = JSON.parse(localStorage.getItem('Authorization'));
 
   return request(`${_apiBase}${_apiArticles}${slug}/favorite`, 'POST', null, {
     'Content-Type': 'application/json',
@@ -71,8 +71,8 @@ export const favoriteArticle = createAsyncThunk('articles/favoriteArticle', (slu
   });
 });
 
-export const unFavoriteArticle = createAsyncThunk('articles/unFavoriteArticle', (slug, { getState }) => {
-  const { token } = getState().users;
+export const unFavoriteArticle = createAsyncThunk('articles/unFavoriteArticle', (slug) => {
+  const token = JSON.parse(localStorage.getItem('Authorization'));
 
   return request(`${_apiBase}${_apiArticles}${slug}/favorite`, 'DELETE', null, {
     'Content-Type': 'application/json',
@@ -106,15 +106,6 @@ const _transformArticleData = (article) => {
     article.author.username.toString().length > 20
       ? `${article.author.username.slice(0, 20)}...`
       : article.author.username;
-
-  let img = new Image();
-  img.src = article.author.image;
-  if (img.complete) {
-    article.author.image = img.src;
-  } else {
-    article.author.image =
-      'https://cdn3.iconfinder.com/data/icons/smoothfill-action/30/action_088-no_camera-capture-picture-image-photo-512.png';
-  }
 
   return article;
 };
