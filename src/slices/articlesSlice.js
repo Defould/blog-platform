@@ -126,9 +126,6 @@ const articlesSlice = createSlice({
     clearStatus: (state) => {
       state.status = null;
     },
-    clearArticle: (state) => {
-      state.article = null;
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -148,6 +145,7 @@ const articlesSlice = createSlice({
       })
       .addCase(fetchArticle.pending, (state) => {
         state.isLoading = true;
+        state.article = null;
         state.error = null;
       })
       .addCase(fetchArticle.fulfilled, (state, action) => {
@@ -222,6 +220,6 @@ const articlesSlice = createSlice({
   },
 });
 
-export const { clearStatus, clearArticle } = articlesSlice.actions;
+export const { clearStatus } = articlesSlice.actions;
 
 export default articlesSlice;

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { nanoid } from '@reduxjs/toolkit';
 import { Statistic, Tag, Popconfirm, message } from 'antd';
 import { format } from 'date-fns';
@@ -6,7 +6,7 @@ import Markdown from 'markdown-to-jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { deleteArticle, favoriteArticle, unFavoriteArticle, clearArticle } from '../../slices/articlesSlice';
+import { deleteArticle, favoriteArticle, unFavoriteArticle } from '../../slices/articlesSlice';
 import favoritIcon from '../../shared/assets/favorit.svg';
 import unfavoritIcon from '../../shared/assets/unfavorit.svg';
 
@@ -35,12 +35,6 @@ const ArticleItem = ({
   const authorImgUrl = author.image;
   const { username } = useSelector((state) => state.users);
   const { token } = useSelector((state) => state.users);
-
-  useEffect(() => {
-    return () => {
-      dispatch(clearArticle());
-    };
-  }, []);
 
   const onDelete = () => {
     dispatch(deleteArticle(slug));
